@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notebook/src/pages/new_task_page.dart';
 
 class ListPage extends StatefulWidget {
   ListPage({Key key}) : super(key: key);
@@ -7,34 +8,47 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPage extends State<ListPage> {
+  bool _checked = false;
+  List<String> tasks = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Cranes'),
-            Container(
-              //  margin: const EdgeInsets.only(right: 75),
+            Expanded(flex: 1, child: Container()),
+            Expanded(
+              flex: 10,
               child: Image.asset(
-                'assets/images/check.svg',
+                'assets/images/check.png',
+                height: 35.0,
               ),
             ),
-            FlatButton(
-              onPressed: () async {},
-              child: Text("paco", style: TextStyle(color: Colors.white)),
-            )
+            Expanded(
+              flex: 1,
+              child: IconButton(
+                icon: Icon(Icons.add),
+                color: Colors.blue[200],
+                iconSize: 30.0,
+                onPressed: () {
+                  _navigateNewTaskPage(context);
+                },
+              ),
+            ),
           ],
         ),
       ),
-      body: _tasksList(),
+      body: Container(
+        padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+        child: _tasksList(),
+      ),
       backgroundColor: Colors.black,
     );
   }
 
   Widget _tasksList() {
-    bool _checked = false;
     return ListView.builder(
         itemCount: 5, // TODO: change for array lenght
         itemBuilder: (BuildContext context, int index) {
@@ -50,5 +64,14 @@ class _ListPage extends State<ListPage> {
             },
           ));
         });
+  }
+
+  _navigateNewTaskPage(BuildContext context) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NewTaskPage(
+                  tasks: tasks,
+                )));
   }
 }

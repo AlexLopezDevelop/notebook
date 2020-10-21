@@ -1,19 +1,61 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
+class NewTaskPage extends StatelessWidget {
+  NewTaskPage({@required this.tasks});
+  final List<String> tasks;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
-        ),
-        body: Center(
+        body: SafeArea(
           child: Container(
-            child: Text('Hello World'),
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    child: Text(
+                      "¿Que quieres recordar?",
+                      style: TextStyle(fontSize: 18),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20, bottom: 20),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Escribe una tarea...'),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          onPressed: () {},
+                          child: Text("Cancelar"),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          color: Colors.blue[200],
+                          onPressed: () {},
+                          child: Text("Añadir"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
           ),
         ),
       ),
