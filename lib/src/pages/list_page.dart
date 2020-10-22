@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notebook/src/models/task.dart';
 import 'package:notebook/src/pages/new_task_page.dart';
 
 class ListPage extends StatefulWidget {
@@ -8,8 +9,7 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPage extends State<ListPage> {
-  bool _checked = false;
-  List<String> tasks = ["Comprar pan", "Limpiar casa"];
+  List<Task> tasks = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +58,7 @@ class _ListPage extends State<ListPage> {
 
   Widget taskItem(context, index) {
     return Dismissible(
-      key: Key(tasks[index]),
+      key: Key(tasks[index].title),
       onDismissed: (direction) {
         var task = tasks[index];
         showSnackBar(context, task, index);
@@ -67,12 +67,12 @@ class _ListPage extends State<ListPage> {
       background: removeTaskBG(),
       child: Card(
           child: CheckboxListTile(
-        title: Text(tasks[index]),
+        title: Text(tasks[index].title),
         controlAffinity: ListTileControlAffinity.platform,
-        value: _checked, // TODO:_change for variable
+        value: tasks[index].done, // TODO:_change for variable
         onChanged: (bool value) {
           setState(() {
-            _checked = value;
+            tasks[index].done = value;
           });
         },
       )),

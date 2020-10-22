@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:notebook/src/models/task.dart';
 
 class NewTaskPage extends StatelessWidget {
   NewTaskPage({@required this.tasks});
-  final List<String> tasks;
+  final List<Task> tasks;
   TextEditingController newTaskController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,9 @@ class NewTaskPage extends StatelessWidget {
                           onPressed: () {
                             print(newTaskController.text);
                             if (newTaskController.text != "") {
-                              tasks.add(newTaskController.text);
+                              Task newTask =
+                                  new Task(newTaskController.text, false);
+                              tasks.add(newTask);
                               Navigator.pop(context);
                             }
                           },
