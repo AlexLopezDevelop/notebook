@@ -9,7 +9,7 @@ class ListPage extends StatefulWidget {
 
 class _ListPage extends State<ListPage> {
   bool _checked = false;
-  List<String> tasks = [];
+  List<String> tasks = ["Comprar pan", "Limpiar casa"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,28 +50,85 @@ class _ListPage extends State<ListPage> {
 
   Widget _tasksList() {
     return ListView.builder(
-        itemCount: 5, // TODO: change for array lenght
+        itemCount: tasks.length, // TODO: change for array lenght
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-              child: CheckboxListTile(
-            title: Text("Comprar pan"),
-            controlAffinity: ListTileControlAffinity.platform,
-            value: _checked, // TODO:_change for variable
-            onChanged: (bool value) {
-              setState(() {
-                _checked = value;
-              });
-            },
-          ));
+          return taskItem(context, index);
         });
+  }
+
+  Widget taskItem(context, index) {
+    return Dismissible(
+      key: Key(tasks[index]),
+      onDismissed: (direction) {
+        var task = tasks[index];
+        showSnackBar(context, task, index);
+        removeTask(index);
+      },
+      background: removeTaskBG(),
+      child: Card(
+          child: CheckboxListTile(
+        title: Text(tasks[index]),
+        controlAffinity: ListTileControlAffinity.platform,
+        value: _checked, // TODO:_change for variable
+        onChanged: (bool value) {
+          setState(() {
+            _checked = value;
+          });
+        },
+      )),
+    );
+  }
+
+  showSnackBar(context, task, index) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text('$task (eliminada)'),
+      action: SnackBarAction(
+        label: "Deshacer",
+        onPressed: () {
+          undoDelete(index, task);
+        },
+      ),
+    ));
+  }
+
+  undoDelete(index, task) {
+    setState(() {
+      tasks.insert(index, task);
+    });
+  }
+
+  removeTask(index) {
+    setState(() {
+      tasks.removeAt(index);
+    });
+  }
+
+  Widget removeTaskBG() {
+    return Container(
+      alignment: Alignment.centerRight,
+      margin: EdgeInsets.only(top: 4, bottom: 4),
+      padding: EdgeInsets.only(right: 20),
+      decoration: BoxDecoration(
+          color: Colors.red,
+          border: Border.all(
+            color: Colors.red[500],
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(5))),
+      child: Icon(
+        Icons.delete,
+        color: Colors.white,
+      ),
+    );
   }
 
   _navigateNewTaskPage(BuildContext context) async {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => NewTaskPage(
+            builder: (context) => new NewTaskPage(
                   tasks: tasks,
-                )));
+                ))).then((value) {
+      setState(() {});
+    });
   }
 }

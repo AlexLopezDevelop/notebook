@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class NewTaskPage extends StatelessWidget {
   NewTaskPage({@required this.tasks});
   final List<String> tasks;
+  TextEditingController newTaskController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,6 +27,7 @@ class NewTaskPage extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 20, bottom: 20),
                     child: TextField(
+                      controller: newTaskController,
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Escribe una tarea...'),
@@ -39,7 +41,9 @@ class NewTaskPage extends StatelessWidget {
                         child: RaisedButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           child: Text("Cancelar"),
                         ),
                       ),
@@ -49,7 +53,13 @@ class NewTaskPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
                           color: Colors.blue[200],
-                          onPressed: () {},
+                          onPressed: () {
+                            print(newTaskController.text);
+                            if (newTaskController.text != "") {
+                              tasks.add(newTaskController.text);
+                              Navigator.pop(context);
+                            }
+                          },
                           child: Text("Añadir"),
                         ),
                       ),
